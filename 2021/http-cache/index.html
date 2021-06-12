@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Http 缓存机制"/>
+
+
+
+
+  <meta name="keywords" content="javascript,http," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="点滴">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://blog.haohuan.org/2021/http-cache/"/>
+
+
+<meta name="description" content="HTTP缓存机制是根据HTTP报文的缓存标识进行的。它分为强缓存和协商缓存。优先级最高的是强缓存，在命中强缓存失败的情况下，才会走协商缓存。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Http 缓存机制">
+<meta property="og:url" content="https://blog.haohuan.org/2021/http-cache/index.html">
+<meta property="og:site_name" content="点滴">
+<meta property="og:description" content="HTTP缓存机制是根据HTTP报文的缓存标识进行的。它分为强缓存和协商缓存。优先级最高的是强缓存，在命中强缓存失败的情况下，才会走协商缓存。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-10T10:21:19.000Z">
+<meta property="article:modified_time" content="2021-06-12T18:26:36.935Z">
+<meta property="article:author" content="haohuan">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="http">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> Http 缓存机制 - 点滴 </title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">点滴</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Http 缓存机制
+        
+      </h1>
+
+      <time class="post-time">
+          1月 10 2021
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>HTTP缓存机制是根据HTTP报文的缓存标识进行的。它分为强缓存和协商缓存。优先级最高的是强缓存，在命中强缓存失败的情况下，才会走协商缓存。</p>
+<a id="more"></a>
+
+
+<p>接下来我们一起来看下这两个缓存机制：</p>
+<h2 id="强缓存"><a href="#强缓存" class="headerlink" title="强缓存"></a>强缓存</h2><p>强缓存是利用http头中的expires和Cache-Control两个字段来控制的；其中 Expires 是 http 1.0 的产物，Cache-Control是 http1.1 提出的新特性；Cache-Control 优化级高于 expires。</p>
+<p>在强缓存中，当请求再次发出时，浏览器会根据其中的Expires和Cache-Control判断目标资源是否“命中”强缓存，如果命中则直接从缓存中获取资源，不会再与服务端发生通信。命中强缓存的情况下，返回的HTTP状态码为200。 </p>
+<h3 id="expires"><a href="#expires" class="headerlink" title="expires"></a>expires</h3><p>expires是一个时间戳，它是由服务器定义的；它的缓存机制就是: 如果我们试图再次向服务器请求资源，浏览器就会先对比本地时间和expires的时间戳，如果本地时间小于expires设定的过期时间，就直接从缓存中获取这个资源（状态码为200（from disk chche) or (from memory cache））。而本地时间的取值来自客户端，所以expires的工作机制对于客户端时间和服务器时间的一致性要求极高，如果两者的时间存在时差，会带来意料之外的结果;</p>
+<h3 id="Cache-Control"><a href="#Cache-Control" class="headerlink" title="Cache-Control"></a>Cache-Control</h3><p>Cache-Control包含的值很多（no-store优先级最高）： （它的缓存机制就是根据对应的值进行缓存，它会存在于请求头reqeust 和 响应头response 中）</p>
+<p>在请求中使用Cache-Control 时，它可选的值有：</p>
+<blockquote>
+<p>no-cache：跳过强缓存，直接进入协商缓存阶段。</p>
+<p>no-store：表示当前请求资源禁用缓存；所有内容都不会被保存到缓存或Internet 临时文件中。</p>
+<p>max-age=：设置缓存存储的最大周期，超过这个时间缓存被认为过期（单位秒）</p>
+<p>max-stale: 告知（代理）服务器客户端愿意接收一个超过缓存时间的资源，若有定义 delta-seconds 则为 delta-seconds  秒， 若没有则为任意超出的时间</p>
+<p>max-fresh=: 告知（代理）服务器客户端希望接收一个在小于 delta-seconds 秒内被更新过的资源</p>
+<p>no-transfrom: 告知（代理）服务器客户端希望获取实体数据没有被转换（比较压缩）过的资源</p>
+<p>only-if-cached: 告知（代理）服务器客户端希望获取缓存的内容（若有），而不用向原服务器发去请求</p>
+<p>cache-extension: 自定义扩展值，若服务器不识别该值将被忽略掉</p>
+</blockquote>
+<p>在Response中使用Cache-Control 时，它可选的值有 (由服务器设置)</p>
+<blockquote>
+<p>public：表明响应可以被任何对象（包括：发送请求的客户端、代理服务器等等）缓存。 (共享缓存可以被多个用户使用) </p>
+<p>private：表明响应只能被客户端缓存。(私有缓存只能用于单独的用户)</p>
+<p>no-cache：跳过强缓存，直接进入协商缓存阶段。</p>
+<p>no-store：表示当前请求资源禁用缓存；所有内容都不会被保存到缓存或Internet 临时文件中。</p>
+<p>no-transfrom：告知客户端缓存文件时不得对实体数据做任务改变</p>
+<p>only-if-cached：告知（代理）服务器客户端希望获取缓存的内容（若有），而不用向原服务器发去请求</p>
+<p>must-revalidate：当前资源一定是向原服务器发去验证请求的，若请求失败会返回 504（而非代理服务器上的缓存）</p>
+<p>proxy-revalidate：与must-revalidate类似，但仅能应用于共享缓存（如代理）</p>
+<p>max-age=：设置缓存存储的最大周期，超过这个时间缓存被认为过期（单位秒）</p>
+<p>s-maxage=：覆盖max-age或者Expires头。如果s-maxage未过期，则向代理服务器请求其缓存内容。</p>
+<p>注意：s-maxage仅在代理服务器中生效，客户端只需要考虑max-age。s-maxage 优先级高于 max-age，两者同时出现时，优先考虑 s-maxage。如果 s-maxage 未过期，则向代理服务器请求其缓存内容。s-maxage 就是用于表示 cache 服务器上（比如 cache CDN）的缓存的有效时间的，并只对 public 缓存有效。<br>cache-extension： 自定义扩展值，若客户端不识别该值将被忽略掉</p>
+</blockquote>
+<h3 id="Pragma"><a href="#Pragma" class="headerlink" title="Pragma"></a>Pragma</h3><p>强缓存中除了 expires 和 Cache-Control 还有一个 Pragma；它是IE浏览器为了向后兼容 HTTP 1.0 服务器，使用Pragma:no-cache 标题对 HTTP 提供特殊支持。（如果客户端通过安全连接 (https://)/与服务器通讯，且服务器在响应中返回 Pragma:no-cache 标题，则 Internet Explorer不会缓存此响应。注意：Pragma:no-cache 仅当在安全连接中使用时才防止缓存，如果在非安全页中使用，处理方式与 Expires:-1相同，该页将被缓存，但被标记为立即过期。）</p>
+<h2 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h2><p>协商缓存是通过Last-Modified和Etag来控制的； 其中Last-Modified 是 http 1.0 的产物，Last-Modified（Response Header） 和 If-Modified-Since （Request Header） 是一对报文头； Etag是 http 1.1 的新特性，Etag （Response Header） 和If-None-Match （Request Header）  是一对报文头。Etag的优先级比Last-Modified高，当 Etag 和 Last-Modified 同时存在时，以 Etag 为准。</p>
+<p>协商缓存机制下，浏览器需要向服务器去询问缓存的相关信息，进而判断是重新发起请求、下载完整的响应，还是从本地获取缓存的资源；如果服务端提示缓存资源未改动（Not Modified），资源会被重定向到浏览器缓存，返回的HTTP状态码为304 Not Modified。它依赖于服务端与浏览器之间的通信。</p>
+<p>协商缓存的执行流程是这样的：当浏览器第一次向服务器发送请求时，会在响应头中返回协商缓存的头属性：ETag和Last-Modified,其中ETag返回的是一个hash值，Last-Modified返回的是GMT格式的最后修改时间。然后浏览器在第二次发送请求的时候，会在请求头中带上与ETag对应的If-Not-Match，其值就是响应头中返回的ETag的值，Last-Modified对应的If-Modified-Since。服务器在接收到这两个参数后会做比较，如果返回的是304状态码，则说明请求的资源没有修改，浏览器可以直接在缓存中取数据，否则，服务器会直接返回数据。</p>
+<h3 id="Last-Modified-amp-If-Modified-Since"><a href="#Last-Modified-amp-If-Modified-Since" class="headerlink" title="Last-Modified &amp; If-Modified-Since"></a>Last-Modified &amp; If-Modified-Since</h3><p>Last-Modified表示资源的最后修改时间，是一个时间戳，如果启用了协商缓存，它会在首次请求时随着Response Headers返回。</p>
+<p>If-Modified-Since是一个请求首部字段，并且只能用在GET或HEAD请求中。客户端再次请求服务器时，请求头会包含这个字段，后面跟着在缓存中获取的资源的最后修改时间。</p>
+<p>服务端收到请求发现此请求头中有If-Modified-Since字段，会与被请求资源的最后修改时间进行对比，如果一致则会返回304和响应报文头，浏览器从缓存中获取数据即可。从字面上看，就是说从某个时间节点开始看，是否被修改了，如果被修改了，就返回整个数据和200 OK，如果没有被修改，服务端只要返回响应头报文，304 Not Modified，Response Headers不会再添加Last-Modified字段。</p>
+<p>使用Last-Modified是有一定缺陷的：</p>
+<ul>
+<li><p>如果资源更新的速度是秒以下单位，那么该缓存是不能被使用的，因为 If-Modified-Since 只能检查到以秒为最小计量单位的时间差。</p>
+</li>
+<li><p>如果文件是通过服务器动态生成的，那么该方法的更新时间永远是生成的时间，尽管文件可能没有变化，所以起不到缓存的作用。</p>
+</li>
+<li><p>我们编辑了文件，但文件的内容没有改变。服务端并不清楚我们是否真正改变了文件，它仍然通过最后编辑时间进行判断。因此这个资源在再次被请求时，会被当做新资源，进而引发一次完整的响应——不该重新请求的时候，也会重新请求。<br>为了解决上面服务器没有正确感知文件变化的问题，Etag作为Last-Modified的补充出现了。</p>
+</li>
+</ul>
+<h3 id="Etag-amp-If-None-Match"><a href="#Etag-amp-If-None-Match" class="headerlink" title="Etag &amp; If-None-Match"></a>Etag &amp; If-None-Match</h3><p>Etag是一个响应首部字段，是根据实体内容生成的一段hash字符串，标识资源的状态，由服务端产生。</p>
+<p>If-None-Match是一个条件式的请求首部，如果请求资源时在请求首部加上这个字段，值为之前服务器返回的Etag，则当且仅当服务器上没有任务资源的Etag属性值与这个值相符，服务器才会返回带有请求资源实体的200响应，否正服务器会返回不带实体的304响应。</p>
+<p>Etag 的生成过程需要服务器额外付出开销，会影响服务端的性能，这是它的弊端。因此启用 Etag 需要我们审时度势。正如我们刚刚所提到的：Etag 并不能替代 Last-Modified，它只能作为 Last-Modified 的补充和强化存在。 Etag 在感知文件变化上比 Last-Modified 更加准确，优先级也更高。当 Etag 和 Last-Modified 同时存在时，以 Etag 为准。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>缓存开关是： pragma， cache-control。</li>
+<li>缓存校验有：Expires，Last-Modified，etag。</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://blog.csdn.net/u012375924/article/details/82806617" target="_blank" rel="noopener">浅谈http中的Cache-Control</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/342774826" target="_blank" rel="noopener">一文彻底掌握HTTP缓存</a></p>
+<p><a href="https://juejin.cn/book/6844733750048210957/section/6844733750106931214" target="_blank" rel="noopener">浏览器缓存机制介绍与缓存策略剖析</a></p>
+<p><a href="https://www.jianshu.com/p/227cee9c8d15" target="_blank" rel="noopener">一文读懂http缓存（超详细）</a></p>
+<p><a href="https://www.jiqizhixin.com/articles/2020-07-24-12" target="_blank" rel="noopener">彻底弄懂浏览器缓存策略</a></p>
+<p><a href="https://www.jianshu.com/p/54cc04190252" target="_blank" rel="noopener">深入理解浏览器的缓存机制</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/javascript/">javascript</a>
+		  
+			<a href="/tags/http/">http</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2021/event-loop/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">事件循环</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2020/reactiveX-programming/">
+        <span class="next-text nav-default">Reactive Programming</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2014 -
+    
+    2021
+    <span class="footer-author">haohuan.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear" target="_blank" rel="noopener">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

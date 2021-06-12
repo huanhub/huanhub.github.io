@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="vim 配置"/>
+
+
+
+
+  <meta name="keywords" content="vim," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="点滴">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://blog.haohuan.org/2017/vim-config/"/>
+
+
+<meta name="description" content="vim 是一个可以安装各种插件来丰富自己的编辑器，也是”编辑器之神”">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vim 配置">
+<meta property="og:url" content="https://blog.haohuan.org/2017/vim-config/index.html">
+<meta property="og:site_name" content="点滴">
+<meta property="og:description" content="vim 是一个可以安装各种插件来丰富自己的编辑器，也是”编辑器之神”">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-06-23T13:20:34.000Z">
+<meta property="article:modified_time" content="2021-06-12T18:26:36.935Z">
+<meta property="article:author" content="haohuan">
+<meta property="article:tag" content="vim">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> vim 配置 - 点滴 </title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">点滴</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          vim 配置
+        
+      </h1>
+
+      <time class="post-time">
+          6月 23 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>vim 是一个可以安装各种插件来丰富自己的编辑器，也是”编辑器之神”</p>
+<a id="more"></a>
+
+<h3 id="vimrc-文件"><a href="#vimrc-文件" class="headerlink" title="~/.vimrc 文件"></a><code>~/.vimrc</code> 文件</h3><blockquote>
+<p>vim 编辑器的配置文件，所有插件和各种配置都在可以在这里配置，所以这个文件很重要</p>
+</blockquote>
+<h3 id="vim-插件管理"><a href="#vim-插件管理" class="headerlink" title="vim 插件管理"></a>vim 插件管理</h3><blockquote>
+<p>vim 自身是没有插件管理的， 所以需要安装一个插件管理器来管理插件 。<a href="http://github.com/VundleVim/Vundle.Vim" target="_blank" rel="noopener">Vundle</a> 是目前最好的插件管理器</p>
+</blockquote>
+<ul>
+<li>安装方法</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.vimrc</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> nocompatible              <span class="string">" be iMproved, required</span></span><br><span class="line"><span class="string">filetype off                  "</span> required</span><br><span class="line"></span><br><span class="line"><span class="string">" set the runtime path to include Vundle and initialize</span></span><br><span class="line"><span class="string">set rtp+=~/.vim/bundle/Vundle.vim</span></span><br><span class="line"><span class="string">call vundle#begin()</span></span><br><span class="line"><span class="string">"</span> alternatively, pass a path <span class="built_in">where</span> Vundle should install plugins</span><br><span class="line"><span class="string">"call vundle#begin('~/some/path/here')</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span> <span class="built_in">let</span> Vundle manage Vundle, required</span><br><span class="line">Plugin <span class="string">'VundleVim/Vundle.vim'</span></span><br><span class="line"></span><br><span class="line"><span class="string">"Custom Plugin list</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span> All of your Plugins must be added before the following line</span><br><span class="line">call vundle<span class="comment">#end()            " required</span></span><br><span class="line">filetype plugin indent on    <span class="string">" required</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用方法<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/VundleVim/Vundle.Vim</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="推荐的插件"><a href="#推荐的插件" class="headerlink" title="推荐的插件"></a>推荐的插件</h3><ul>
+<li>syntastic</li>
+<li>vim-autoformat</li>
+<li>SimpylFold</li>
+<li>Powerline</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Plugin &#39;tmhedberg&#x2F;SimpylFold&#39;</span><br><span class="line">Plugin &#39;Valloric&#x2F;YouCompleteMe&#39;</span><br><span class="line">Plugin &#39;scrooloose&#x2F;nerdtree&#39;</span><br><span class="line">&quot; 这个插件可以显示文件的Git增删状态</span><br><span class="line">Plugin &#39;Xuyuanp&#x2F;nerdtree-git-plugin&#39;</span><br><span class="line">Plugin &#39;kien&#x2F;ctrlp.vim&#39;  &quot; 全局搜索</span><br><span class="line">Plugin &#39;Lokaltog&#x2F;powerline&#39;, &#123;&#39;rtp&#39;: &#39;powerline&#x2F;bindings&#x2F;vim&#x2F;&#39;&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>NERDTree<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Plugin <span class="string">'scrooloose/nerdtree'</span></span><br><span class="line"><span class="string">" 这个插件可以显示文件的Git增删状态</span></span><br><span class="line"><span class="string">Plugin 'Xuyuanp/nerdtree-git-plugin'</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&quot; Ctrl+N 打开&#x2F;关闭</span><br><span class="line">map &lt;C-n&gt; :NERDTreeToggle&lt;CR&gt;</span><br><span class="line">&quot; 当不带参数打开Vim时自动加载项目树</span><br><span class="line">autocmd StdinReadPre * let s:std_in&#x3D;1</span><br><span class="line">autocmd VimEnter * if argc() &#x3D;&#x3D; 0 &amp;&amp; !exists(&quot;s:std_in&quot;) | NERDTree | endif</span><br><span class="line">&quot; 当所有文件关闭时关闭项目树窗格</span><br><span class="line">autocmd bufenter * if (winnr(&quot;$&quot;) &#x3D;&#x3D; 1 &amp;&amp; exists(&quot;b:NERDTreeType&quot;) &amp;&amp; b:NERDTreeType &#x3D;&#x3D; &quot;primary&quot;) | q | endif</span><br><span class="line">&quot; 不显示这些文件</span><br><span class="line">let NERDTreeIgnore&#x3D;[&#39;\.pyc$&#39;, &#39;\~$&#39;, &#39;node_modules&#39;] &quot;ignore files in NERDTree</span><br><span class="line">&quot; 不显示项目树上额外的信息，例如帮助、提示什么的</span><br><span class="line">let NERDTreeMinimalUI&#x3D;1</span><br></pre></td></tr></table></figure>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/vim/">vim</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2017/tmux/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">tmux 使用与配置</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2017/software-version/">
+        <span class="next-text nav-default">软件版本号</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2014 -
+    
+    2021
+    <span class="footer-author">haohuan.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear" target="_blank" rel="noopener">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

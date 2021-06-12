@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="事件循环"/>
+
+
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="点滴">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://blog.haohuan.org/2021/event-loop/"/>
+
+
+<meta name="description" content="Javascript 事件循环 是指浏览器或Node的一种解决JS单线程运行时不会阻塞的一种机制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事件循环">
+<meta property="og:url" content="https://blog.haohuan.org/2021/event-loop/index.html">
+<meta property="og:site_name" content="点滴">
+<meta property="og:description" content="Javascript 事件循环 是指浏览器或Node的一种解决JS单线程运行时不会阻塞的一种机制">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-10T09:01:19.000Z">
+<meta property="article:modified_time" content="2021-06-12T18:26:36.931Z">
+<meta property="article:author" content="haohuan">
+<meta property="article:tag" content="javascript">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> 事件循环 - 点滴 </title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">点滴</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          事件循环
+        
+      </h1>
+
+      <time class="post-time">
+          6月 10 2021
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>Javascript 事件循环 是指浏览器或Node的一种解决JS单线程运行时不会阻塞的一种机制</p>
+<a id="more"></a>
+
+<p>简单来说，Event Loop（事件循环）是js的执行机制，当从script标签开始执行就会分 异步任务和同步任务，同步任务会直接进入主线程依次执行，异步任务会分宏任务和微任务，在一次事件循环中，微任务队列会先执行完，再执行宏任务，这样就完成了一个事件循环，然后才执行下一个事件循环。</p>
+<h4 id="示例1"><a href="#示例1" class="headerlink" title="示例1:"></a>示例1:</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">执行结果：</span><br><span class="line"><span class="comment">// 1 3 2</span></span><br><span class="line"></span><br><span class="line">分析：</span><br><span class="line"><span class="number">1.</span><span class="built_in">console</span>.log(<span class="number">1</span>)是同步任务，直接打印<span class="number">1</span>；</span><br><span class="line"><span class="number">2.</span>setTimeout是异步任务，且是宏函数，放到宏函数队列中，等待下次Event Loop才会执行；</span><br><span class="line"><span class="number">3.</span><span class="built_in">console</span>.log(<span class="number">3</span>)是同步任务，直接打印<span class="number">3</span>；</span><br><span class="line"><span class="number">4.</span>主线程执行完毕，没有微任务，那么执行第二个宏任务setTimeout，打印<span class="number">2</span>；</span><br><span class="line"><span class="number">5.</span>结果：<span class="number">1</span>，<span class="number">3</span>，<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="示例2："><a href="#示例2：" class="headerlink" title="示例2："></a>示例2：</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++)&#123;</span><br><span class="line">        i == <span class="number">9999</span> &amp;&amp; resolve();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">执行结果：</span><br><span class="line"><span class="comment">// 2， 4， 3， 1</span></span><br><span class="line"></span><br><span class="line">分析：</span><br><span class="line"><span class="number">1.</span>setTimeout是异步，且是宏函数，放到宏函数队列中；</span><br><span class="line"><span class="number">2.n</span>ew <span class="built_in">Promise</span>是同步任务，直接执行，打印<span class="number">2</span>，并执行<span class="keyword">for</span>循环；</span><br><span class="line"><span class="number">3.</span>promise.then是微任务，放到微任务队列中；</span><br><span class="line"><span class="number">4.</span><span class="built_in">console</span>.log(<span class="number">4</span>)同步任务，直接执行，打印<span class="number">4</span>；</span><br><span class="line"><span class="number">5.</span>此时主线程任务执行完毕，检查微任务队列中，有promise.then，执行微任务，打印<span class="number">3</span>；</span><br><span class="line"><span class="number">6.</span>微任务执行完毕，第一次循环结束；从宏任务队列中取出第一个宏任务到主线程执行，打印<span class="number">1</span>；</span><br><span class="line"><span class="number">7.</span>结果：<span class="number">2</span>，<span class="number">4</span>，<span class="number">3</span>，<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="示例3："><a href="#示例3：" class="headerlink" title="示例3："></a>示例3：</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">3</span>);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'4.我是新增的微任务'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">执行结果：</span><br><span class="line"><span class="comment">// 1，5，3，4.我是新增的微任务，2</span></span><br><span class="line"></span><br><span class="line">分析：</span><br><span class="line"><span class="number">1.</span><span class="built_in">console</span>.log(<span class="number">1</span>)是同步任务，直接执行，打印<span class="number">1</span>；</span><br><span class="line"><span class="number">2.</span>setTimeout是异步，且是宏函数，放到宏函数队列中；</span><br><span class="line"><span class="number">3.</span><span class="built_in">Promise</span>.resolve().then是微任务，放到微任务队列中；</span><br><span class="line"><span class="number">4.</span><span class="built_in">console</span>.log(<span class="number">5</span>)是同步任务，直接执行，打印<span class="number">5</span>；</span><br><span class="line"><span class="number">5.</span>此时主线程任务执行完毕，检查微任务队列中，有<span class="built_in">Promise</span>.resolve().then，执行微任务，打印<span class="number">3</span>；</span><br><span class="line"><span class="number">6.</span>此时发现第二个.then任务，属于微任务，添加到微任务队列，并执行，打印<span class="number">4.</span>我是新增的微任务；</span><br><span class="line"><span class="number">7.</span>这里强调一下，微任务执行过程中，发现新的微任务，会把这个新的微任务添加到队列中，微任务队列依次执行完毕后，才会执行下一个循环；</span><br><span class="line"><span class="number">8.</span>微任务执行完毕，第一次循环结束；取出宏任务队列中的第一个宏任务setTimeout到主线程执行，打印<span class="number">2</span>；</span><br><span class="line"><span class="number">9.</span>结果：<span class="number">1</span>，<span class="number">5</span>，<span class="number">3</span>，<span class="number">4.</span>我是新增的微任务，<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="示例4："><a href="#示例4：" class="headerlink" title="示例4："></a>示例4：</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// timer1</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">  &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line">add();</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// timer2</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// timer3</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">5</span>)</span><br><span class="line">  &#125;, <span class="number">100</span>)</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">    i == <span class="number">99</span> &amp;&amp; resolve()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// timer4</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">6</span>) </span><br><span class="line">  &#125;, <span class="number">0</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">7</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">执行结果</span><br><span class="line"><span class="comment">//1，4，8，7，3，6，5，2</span></span><br><span class="line"></span><br><span class="line">分析：</span><br><span class="line"><span class="number">1.</span>add()是同步任务，直接执行，打印<span class="number">1</span>；</span><br><span class="line"><span class="number">2.</span>add()里面的setTimeout是异步任务且宏函数，记做timer1放到宏函数队列；</span><br><span class="line"><span class="number">3.</span>add()下面的setTimeout是异步任务且宏函数，记做timer2放到宏函数队列；</span><br><span class="line"><span class="number">4.n</span>ew <span class="built_in">Promise</span>是同步任务，直接执行，打印<span class="number">4</span>；</span><br><span class="line"><span class="number">5.</span><span class="built_in">Promise</span>里面的setTimeout是异步任务且宏函数，记做timer3放到宏函数队列；</span><br><span class="line"><span class="number">6.</span><span class="built_in">Promise</span>里面的<span class="keyword">for</span>循环，同步任务，执行代码；</span><br><span class="line"><span class="number">7.</span><span class="built_in">Promise</span>.then是微任务，放到微任务队列；</span><br><span class="line"><span class="number">8.</span><span class="built_in">console</span>.log(<span class="number">8</span>)是同步任务，直接执行，打印<span class="number">8</span>；</span><br><span class="line"><span class="number">9.</span>此时主线程任务执行完毕，检查微任务队列中，有<span class="built_in">Promise</span>.then，执行微任务，发现有setTimeout是异步任务且宏函数，记做timer4放到宏函数队列；</span><br><span class="line"><span class="number">10.</span>微任务队列中的<span class="built_in">console</span>.log(<span class="number">7</span>)是同步任务，直接执行，打印<span class="number">7</span>；</span><br><span class="line"><span class="number">11.</span>微任务执行完毕，第一次循环结束；</span><br><span class="line"><span class="number">12.</span>检查宏任务Event Table，里面有timer1、timer2、timer3、timer4，四个定时器宏任务，按照定时器延迟时间得到可以执行的顺序，即Event Queue：timer2、timer4、timer3、timer1，取出排在第一个的timer2；</span><br><span class="line"><span class="number">13.</span>取出timer2执行，<span class="built_in">console</span>.log(<span class="number">3</span>)同步任务，直接执行，打印<span class="number">3</span>；</span><br><span class="line"><span class="number">14.</span>没有微任务，第二次Event Loop结束；</span><br><span class="line"><span class="number">15.</span>取出timer4执行，<span class="built_in">console</span>.log(<span class="number">6</span>)同步任务，直接执行，打印<span class="number">6</span>；</span><br><span class="line"><span class="number">16.</span>没有微任务，第三次Event Loop结束；</span><br><span class="line"><span class="number">17.</span>取出timer3执行，<span class="built_in">console</span>.log(<span class="number">5</span>)同步任务，直接执行，打印<span class="number">5</span>；</span><br><span class="line"><span class="number">18.</span>没有微任务，第四次Event Loop结束；</span><br><span class="line"><span class="number">19.</span>取出timer1执行，<span class="built_in">console</span>.log(<span class="number">2</span>)同步任务，直接执行，打印<span class="number">2</span>；</span><br><span class="line"><span class="number">20.</span>没有微任务，也没有宏任务，第五次Event Loop结束；</span><br><span class="line"><span class="number">21.</span>结果：<span class="number">1</span>，<span class="number">4</span>，<span class="number">8</span>，<span class="number">7</span>，<span class="number">3</span>，<span class="number">6</span>，<span class="number">5</span>，<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="示例5："><a href="#示例5：" class="headerlink" title="示例5："></a>示例5：</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// timer1</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;  <span class="comment">// timer3</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;  <span class="comment">// timer2</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">3</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">执行结果</span><br><span class="line"><span class="comment">//1，3，2</span></span><br><span class="line"></span><br><span class="line">分析：</span><br><span class="line"><span class="number">1.</span>第一个setTimeout是异步任务且宏函数，记做timer1放到宏函数队列；</span><br><span class="line"><span class="number">2.</span>第三个setTimeout是异步任务且宏函数，记做timer2放到宏函数队列；</span><br><span class="line"><span class="number">3.</span>没有微任务，第一次Event Loop结束；</span><br><span class="line"><span class="number">4.</span>取出timer1，<span class="built_in">console</span>.log(<span class="number">1</span>)同步任务，直接执行，打印<span class="number">1</span>；</span><br><span class="line"><span class="number">5.</span>timer1里面的setTimeout是异步任务且宏函数，记做timer3放到宏函数队列；</span><br><span class="line"><span class="number">6.</span>没有微任务，第二次Event Loop结束；</span><br><span class="line"><span class="number">7.</span>取出timer2，<span class="built_in">console</span>.log(<span class="number">3</span>)同步任务，直接执行，打印<span class="number">3</span>；</span><br><span class="line"><span class="number">8.</span>没有微任务，第三次Event Loop结束；</span><br><span class="line"><span class="number">9.</span>取出timer3，<span class="built_in">console</span>.log(<span class="number">2</span>)同步任务，直接执行，打印<span class="number">2</span>；</span><br><span class="line"><span class="number">10.</span>没有微任务，也没有宏任务，第四次Event Loop结束；</span><br><span class="line"><span class="number">11.</span>结果：<span class="number">1</span>，<span class="number">3</span>，<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="示例6："><a href="#示例6：" class="headerlink" title="示例6："></a>示例6：</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'1'</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'2'</span>);</span><br><span class="line">    process.nextTick(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'3'</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'4'</span>);</span><br><span class="line">        resolve();</span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'5'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">process.nextTick(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'6'</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'7'</span>);</span><br><span class="line">    resolve();</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'8'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'9'</span>);</span><br><span class="line">    process.nextTick(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'10'</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'11'</span>);</span><br><span class="line">        resolve();</span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'12'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">执行结果 </span><br><span class="line"><span class="comment">// 1，7，6，8，2，4，3，5，9，11，10，12</span></span><br><span class="line"></span><br><span class="line">分析：</span><br><span class="line"><span class="number">1.</span> <span class="built_in">console</span>.log(<span class="number">1</span>)是同步任务，直接执行，打印 <span class="number">1</span>；</span><br><span class="line"><span class="number">2.</span> setTimeout是异步，且是宏函数，放到宏任务队列中，暂且记为setTimeout1；</span><br><span class="line"><span class="number">3.</span> process.nextTick() 是微任务，放到微任务队列中，暂且记为process1；</span><br><span class="line"><span class="number">4.</span> <span class="keyword">new</span> <span class="built_in">Promise</span>是同步任务，直接执行，打印 <span class="number">7</span>；</span><br><span class="line"><span class="number">5.</span> <span class="built_in">Promise</span>.then是微任务，放到微任务队列, 暂且记为 then1；</span><br><span class="line"><span class="number">6.</span> setTimeout是异步，且是宏函数，放到宏任务队列中，暂且记为setTimeout2；(此时第一轮事件循环宏任务执行完成，发现了两个微任务)</span><br><span class="line"><span class="number">7.</span> 执行 process1，打印 <span class="number">6</span>;</span><br><span class="line"><span class="number">8.</span> 执行 then1，打印 <span class="number">8</span>; (此时第一轮事件循环正式结束)</span><br><span class="line"><span class="number">9.</span> <span class="built_in">console</span>.log(<span class="string">'2'</span>) 是同步任务，直接执行，打印 <span class="number">2</span>；</span><br><span class="line"><span class="number">10.</span> 遇到 process.nextTick() 是微任务，放到微任务队列中，暂且记为process2；</span><br><span class="line"><span class="number">11.</span> <span class="keyword">new</span> <span class="built_in">Promise</span>是同步任务，直接执行，打印 <span class="number">4</span>；</span><br><span class="line"><span class="number">12.</span> <span class="built_in">Promise</span>.then是微任务，放到微任务队列, 暂且记为 then2；（此时第二轮事件循环宏任务执行完成，发现了两个微任务）</span><br><span class="line"><span class="number">13.</span> 执行 process2，打印 <span class="number">3</span>;</span><br><span class="line"><span class="number">14.</span> 执行 then2，打印 <span class="number">5</span>; (此时第二轮事件循环正式结束)</span><br><span class="line"><span class="number">15.</span> <span class="built_in">console</span>.log(<span class="string">'9'</span>) 是同步任务，直接执行，打印 <span class="number">9</span>；</span><br><span class="line"><span class="number">16.</span> 遇到 process.nextTick() 是微任务，放到微任务队列中，暂且记为process3；</span><br><span class="line"><span class="number">17.</span> <span class="keyword">new</span> <span class="built_in">Promise</span>是同步任务，直接执行，打印 <span class="number">11</span>；</span><br><span class="line"><span class="number">18.</span> <span class="built_in">Promise</span>.then是微任务，放到微任务队列, 暂且记为 then3；（此时第三轮事件循环宏任务执行完成，发现了两个微任务）</span><br><span class="line"><span class="number">19.</span> 执行 process3，打印 <span class="number">10</span>；</span><br><span class="line"><span class="number">20.</span> 执行 then3，打印 <span class="number">12</span>；</span><br></pre></td></tr></table></figure>
+<p>注意： process对象是 Node 的一个全局对象，提供当前 Node 进程的信息。它可以在脚本的任意位置使用，不必通过require命令加载。该对象部署了EventEmitter接口</p>
+<blockquote>
+<p>宏任务(macro-task)：整体代码script、setTimeOut、setInterval<br>微任务(mincro-task)：promise.then、process.nextTick(node)</p>
+</blockquote>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a href="https://www.jianshu.com/p/e06e86ef2595" target="_blank" rel="noopener">js运行机制详解（Event Loop）</a></p>
+<p><a href="https://juejin.cn/post/6844903512845860872" target="_blank" rel="noopener">这一次，彻底弄懂 JavaScript 执行机制</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/javascript/">javascript</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2021/http-cache/">
+        <span class="next-text nav-default">Http 缓存机制</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2014 -
+    
+    2021
+    <span class="footer-author">haohuan.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear" target="_blank" rel="noopener">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

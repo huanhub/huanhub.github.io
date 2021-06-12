@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Reactive Programming"/>
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="点滴">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://blog.haohuan.org/2020/reactiveX-programming/"/>
+
+
+<meta name="description" content="Reactive Programming (响应式编程) 是一种以异步数据流(asynchronous data streams) 为中心思想出发的程序撰写方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reactive Programming">
+<meta property="og:url" content="https://blog.haohuan.org/2020/reactiveX-programming/index.html">
+<meta property="og:site_name" content="点滴">
+<meta property="og:description" content="Reactive Programming (响应式编程) 是一种以异步数据流(asynchronous data streams) 为中心思想出发的程序撰写方式">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-13T14:13:15.000Z">
+<meta property="article:modified_time" content="2021-06-12T18:26:36.935Z">
+<meta property="article:author" content="haohuan">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> Reactive Programming - 点滴 </title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">点滴</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Reactive Programming
+        
+      </h1>
+
+      <time class="post-time">
+          5月 13 2020
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>Reactive Programming (响应式编程) 是一种以异步数据流(asynchronous data streams) 为中心思想出发的程序撰写方式</p>
+<a id="more"></a>
+
+<h2 id="What-is-Reactive-Programming"><a href="#What-is-Reactive-Programming" class="headerlink" title="What is Reactive Programming?"></a>What is Reactive Programming?</h2><blockquote>
+<p>Reactive Programming 是一种以异步数据流(asynchronous data streams) 为中心思想出发的程序撰写方式，比较常听到的是异步事件(asynchronous event)，像是 user click event, mouse hover event 等等，而这边特別的则是 data 与 stream，顾名思义，Reactive Extensions 将 event 延伸为 data，并且注重在 stream （串流）上，也就是 时间序列上的一连串资料事件，Rx让你将任何事情都变化为 data streams : variables, user inputs, properties, caches, data structures 等等皆可，透过 Observe 这些 data streams，并依据其造成的 side effects 进行对应的动作。</p>
+</blockquote>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2021/http-cache/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Http 缓存机制</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2019/event-delegate/">
+        <span class="next-text nav-default">Javascript 事件委托</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2014 -
+    
+    2021
+    <span class="footer-author">haohuan.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear" target="_blank" rel="noopener">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

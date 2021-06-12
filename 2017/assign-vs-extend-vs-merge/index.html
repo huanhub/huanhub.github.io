@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="assign、extend 和 merge的区别"/>
+
+
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="点滴">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://blog.haohuan.org/2017/assign-vs-extend-vs-merge/"/>
+
+
+<meta name="description" content="最近在coding 的时候经常看到 lodash.assign, Object.assign, lodash.extend,lodash.merge、$.extend、 $.merge 这些函数， 这些函数名的字面意思看起来都很相似，好像都是合并对象，但究竟有什么区别呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="assign、extend 和 merge的区别">
+<meta property="og:url" content="https://blog.haohuan.org/2017/assign-vs-extend-vs-merge/index.html">
+<meta property="og:site_name" content="点滴">
+<meta property="og:description" content="最近在coding 的时候经常看到 lodash.assign, Object.assign, lodash.extend,lodash.merge、$.extend、 $.merge 这些函数， 这些函数名的字面意思看起来都很相似，好像都是合并对象，但究竟有什么区别呢？">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-08-02T10:31:07.000Z">
+<meta property="article:modified_time" content="2021-06-12T18:26:36.931Z">
+<meta property="article:author" content="haohuan">
+<meta property="article:tag" content="javascript">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> assign、extend 和 merge的区别 - 点滴 </title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">点滴</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          assign、extend 和 merge的区别
+        
+      </h1>
+
+      <time class="post-time">
+          8月 02 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>最近在coding 的时候经常看到 <code>lodash.assign</code>, <code>Object.assign</code>, <code>lodash.extend</code>,<br><code>lodash.merge</code>、<code>$.extend</code>、 <code>$.merge</code> 这些函数， 这些函数名的字面意思看起来都很相似，好<br>像都是合并对象，但究竟有什么区别呢？</p>
+<a id="more"></a>
+
+<h2 id="lodash-assign"><a href="#lodash-assign" class="headerlink" title="lodash.assign"></a>lodash.assign</h2><p>lodash.assign(object, [sources]), 官网定义的意思是说 将源对象可枚举的键为字符串属性合并<br>到目标对象，源对象会从左到右应用，后面的源对象会覆盖前面的源对象相同属性。</p>
+<h2 id="Object-assign"><a href="#Object-assign" class="headerlink" title="Object.assign"></a>Object.assign</h2><p>Object.assign(target, …sources)方法用于将所有可枚举的属性的值从一个或多个源对象复制到目标对象。<br>它将返回目标对象。</p>
+<h2 id="lodash-extend"><a href="#lodash-extend" class="headerlink" title="lodash.extend"></a>lodash.extend</h2><p>lodash.extend(object, [sources]) 这个方法类似于lodash.assign，它将源对象的自身和继承的可枚举的键为字符串属性合并到目标对象</p>
+<h2 id="lodash-merge"><a href="#lodash-merge" class="headerlink" title="lodash.merge"></a>lodash.merge</h2><p>lodash.merge(object, [sources]) 个方法类似于lodash.assign，它除了将源对象的自身和继承的可枚举字符串键控属性递归合并到目标对象中。如果存在目标属性为undefind，则会跳过该属性。数组和简单对象属性被递归合并。其他对象和值类型被赋值覆盖。源对象从左到右应用。后面的源对象会覆盖前面的源对象相同属性。</p>
+<h2 id="extend"><a href="#extend" class="headerlink" title="$.extend"></a>$.extend</h2><p>jQuery.extend([deep], target, object1, [objectN]) 用一个或多个其他对象来扩展一个对象，返回被扩展的对象。如果第一个参数设置为true，则jQuery返回一个深层次的副本，递归地复制找到的任何对象。否则的话，副本会与原对象共享结构。 未定义的属性将不会被复制，然而从对象的原型继承的属性将会被复制。</p>
+<h2 id="merge"><a href="#merge" class="headerlink" title="$.merge"></a>$.merge</h2><p>jQuery.merge(first, second), 合并两个数组</p>
+<p>解释了这么多，还不如直接上代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = &#123;<span class="number">0</span>: <span class="number">1</span>, <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123;<span class="attr">a</span>: &#123;<span class="attr">c</span>: <span class="number">1</span>, <span class="attr">d</span>: <span class="number">2</span>&#125;, <span class="attr">b</span>: <span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> o3 = &#123;<span class="attr">a</span>: &#123;<span class="attr">c</span>: <span class="number">2</span>, <span class="attr">e</span>: <span class="number">1</span>&#125;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.tc = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">Test.prototype.td = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.assign(&#123;&#125;, o1, o2))</span><br><span class="line"><span class="comment">// &#123;0: 1, a: &#123;c: 1, d: 2,&#125;, b: 3&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o1)</span><br><span class="line"><span class="comment">// &#123;0: 1, a: 1, b: 2&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果没有指定一个空对象会修改到目标对象本身</span></span><br><span class="line"><span class="comment">// console.log(Object.assign(o1, o2))</span></span><br><span class="line"><span class="comment">// &#123;0: 1, a: &#123;c: 1, d: 2,&#125;, b: 3&#125;</span></span><br><span class="line"><span class="comment">// console.log(o1)</span></span><br><span class="line"><span class="comment">// &#123;0: 1, a: &#123;c: 1, d: 2,&#125;, b: 3&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.assign(&#123;&#125;, o1, o2, o3))</span><br><span class="line"><span class="comment">// &#123;0: 1, a: &#123;c: 2, e: 1,&#125;, b: 3&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不会合并原型上的属性  td 属性没有被合并上</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.assign(&#123;&#125;, o1, o2, o3, <span class="keyword">new</span> Test()))</span><br><span class="line"><span class="comment">// &#123;0: 1, a: &#123;c: 2, e: 1,&#125;, b: 3, tc: 1&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(lodash.assign(&#123;&#125;, o1, o2, o3, <span class="keyword">new</span> Test()))</span><br><span class="line"><span class="comment">// &#123;0: 1, a: &#123;c: 2, e: 1,&#125;, b: 3, tc: 1&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(lodash.extend(&#123;&#125;, o1, o2, o3, <span class="keyword">new</span> Test()))</span><br><span class="line"><span class="comment">// &#123;0: 1, a: &#123;c: 2, e: 1,&#125;, b: 3, tc: 1, td: 2&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log($.extend(&#123;&#125;, o1, o2, o3, <span class="keyword">new</span> Test()))</span><br><span class="line"><span class="comment">// &#123;0: 1, a: &#123;c: 2, e: 1,&#125;, b: 3, tc: 1, td: 2&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(lodash.merge(&#123;&#125;, o1, o2, o3, <span class="keyword">new</span> Test()))</span><br><span class="line"><span class="comment">// &#123;0: 1, a: &#123;c: 2, d: 2, e: 1,&#125;, b: 3, tc: 1, td: 2&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log($.extend(<span class="literal">true</span>, &#123;&#125;, o1, o2, o3, <span class="keyword">new</span> Test()))</span><br><span class="line"><span class="comment">// &#123;0: 1, a: &#123;c: 2, d: 2, e: 1,&#125;, b: 3, tc: 1, td: 2&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p><code>Object.assign</code> 和 <code>lodash.assign</code> 基本上是一样的，lodash 官网标注了 <code>lodash.assign</code>是<br>基于 <code>Object.assign</code> 的, 并且不会合并原型上的属性</p>
+</li>
+<li><p><code>lodash.extend</code> 和 <code>$.extend</code> 没有deep 参数的作用是一样的，都是浅复制，会把后面源对象属性<br>直接覆盖前面源对象的属性</p>
+</li>
+<li><p><code>lodash.merge</code> 和 <code>$.extend</code> deep参数为true 的作用是一样的，都是深复制，会把后面源对象的对象属性<br>和前面源对象的对象属性进行合并</p>
+</li>
+<li><p>lodash 3.x 版本中 <code>extend</code> 和 <code>assign</code> 一样, 4.x 版本中会合并原型链上的属性</p>
+</li>
+<li><p>lodash 4.x <code>extend</code> 是 <code>assignIn</code> 的别名</p>
+</li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/javascript/">javascript</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2017/git-opeartion/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">git 常用操作</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2017/shell-operation/">
+        <span class="next-text nav-default">bash 常用操作快捷键</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2014 -
+    
+    2021
+    <span class="footer-author">haohuan.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear" target="_blank" rel="noopener">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Javascript 事件委托"/>
+
+
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+  <link rel="alternate" href="/default" title="点滴">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://blog.haohuan.org/2019/event-delegate/"/>
+
+
+<meta name="description" content="JavaScript 事件委托就是利用 JavaScript 事件冒泡的特性，将内层元素的事件委托（绑定）给外层元素处理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript 事件委托">
+<meta property="og:url" content="https://blog.haohuan.org/2019/event-delegate/index.html">
+<meta property="og:site_name" content="点滴">
+<meta property="og:description" content="JavaScript 事件委托就是利用 JavaScript 事件冒泡的特性，将内层元素的事件委托（绑定）给外层元素处理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-06-10T10:21:19.000Z">
+<meta property="article:modified_time" content="2021-06-12T18:26:36.931Z">
+<meta property="article:author" content="haohuan">
+<meta property="article:tag" content="javascript">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> Javascript 事件委托 - 点滴 </title>
+  <meta name="generator" content="Hexo 4.2.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">点滴</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Javascript 事件委托
+        
+      </h1>
+
+      <time class="post-time">
+          6月 10 2019
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>JavaScript 事件委托就是利用 JavaScript 事件冒泡的特性，将内层元素的事件委托（绑定）给外层元素处理。</p>
+<a id="more"></a>
+
+<blockquote>
+<p>通俗的讲，事件委托就是把一个元素响应事件（click、keydown…）的函数委托到另一个元素上。</p>
+</blockquote>
+<blockquote>
+<p>简单的讲，事件委托就是利用 JavaScript 事件冒泡的特性，将内层元素的事件委托（绑定）给外层元素处理。</p>
+</blockquote>
+<blockquote>
+<p>一般来讲，事件委托会把一个或者一组元素的事件委托（绑定）到它的父层元素或者更外层元素上，真正绑定事件的是外层元素，当事件响应到需要绑定的元素上时，会通过事件冒泡机制从而触发它的外层元素的绑定事件上，然后在外层元素上去执行函数。</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">title</span>&gt;</span>普通写法（不使用事件委托）<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>li 1 号<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>li 2 号<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>li 3 号<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>li 4 号<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"btn"</span>&gt;</span>添加<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript"><span class="comment">// 通过标签名获取元素</span></span></span><br><span class="line"><span class="javascript"><span class="keyword">let</span> oUl = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"ul"</span>)[<span class="number">0</span>];</span></span><br><span class="line"><span class="javascript"><span class="keyword">let</span> oLi = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"li"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript"><span class="comment">// 遍历元素给每个元素添加点击事件</span></span></span><br><span class="line"><span class="javascript"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; oLi.length; i++) &#123;</span></span><br><span class="line"><span class="actionscript">	oLi[i].onclick = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">		<span class="built_in">console</span>.log(oLi[i].innerText);</span></span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="actionscript"><span class="comment">// 通过 id 获取 按钮元素</span></span></span><br><span class="line"><span class="javascript"><span class="keyword">let</span> btn = <span class="built_in">document</span>.getElementById(<span class="string">"btn"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript"><span class="comment">// 给按钮添加点击事件</span></span></span><br><span class="line"><span class="actionscript">btn.onclick = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">	<span class="comment">// 创建新的 li</span></span></span><br><span class="line"><span class="javascript">	<span class="keyword">let</span> aLi = <span class="built_in">document</span>.createElement(<span class="string">"li"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">	<span class="comment">// 给 li 赋值</span></span></span><br><span class="line"><span class="javascript">	aLi.innerHTML = <span class="string">`li <span class="subst">$&#123;oLi.length+<span class="number">1</span>&#125;</span> 号`</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">	<span class="comment">// 为新节点单独添加事件</span></span></span><br><span class="line"><span class="actionscript">	aLi.onclick = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">		<span class="built_in">console</span>.log(aLi.innerText);</span></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line"><span class="actionscript">	<span class="comment">// 把 li 展示到页面上</span></span></span><br><span class="line">	oUl.appendChild(aLi);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line">分析：</span><br><span class="line">从上面的代码可以看到，用 for 循环给相应的 li 添加点击事件，每添加一个就多一次 dom 操作，加上按钮点击总共 5 次。当添加新的 li 元素时，还要给新 li 元素添加点击事件，这无疑有些繁琐，而且 dom 操作的次数没有做优化，显然当页面的 li 元素很多的时候，性能将会受到影响。</span><br><span class="line">————————————————</span><br><span class="line">版权声明：本文为CSDN博主「web晨」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。</span><br><span class="line">原文链接：https://blog.csdn.net/weixin_51157081/article/details/115823928</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">title</span>&gt;</span>事件委托写法<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>li 1 号<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>li 2 号<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>li 3 号<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>li 4 号<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"btn"</span>&gt;</span>添加<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript"><span class="comment">// 通过标签名获取元素</span></span></span><br><span class="line"><span class="javascript"><span class="keyword">let</span> oUl = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"ul"</span>)[<span class="number">0</span>];</span></span><br><span class="line"><span class="javascript"><span class="keyword">let</span> oLi = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"li"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript"><span class="comment">// 直接给 ul 添加点击事件</span></span></span><br><span class="line"><span class="actionscript">oUl.onclick = <span class="function"><span class="keyword">function</span><span class="params">(ev)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">	<span class="comment">// ev 对象的兼容处理</span></span></span><br><span class="line"><span class="javascript">	ev = ev || <span class="built_in">window</span>.event;</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">	<span class="comment">// 通过 ev 对象的 target 找到触发事件的元素    </span></span></span><br><span class="line"><span class="actionscript">	<span class="comment">// 此操作的作用是：拿到对应的元素</span></span></span><br><span class="line"><span class="javascript">	<span class="keyword">let</span> target = ev.target || ev.srcElement;</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">	<span class="comment">// 需求中的操作</span></span></span><br><span class="line"><span class="actionscript">	<span class="comment">// target.nodeName.toLowerCase() 获取元素的操作</span></span></span><br><span class="line"><span class="actionscript">	<span class="comment">// 写法一</span></span></span><br><span class="line"><span class="actionscript">	<span class="keyword">if</span> (target.nodeName.toLowerCase() == <span class="string">"li"</span>) &#123;</span></span><br><span class="line"><span class="javascript">		<span class="built_in">console</span>.log(target.innerText);</span></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line"><span class="actionscript">	<span class="comment">// 写法二</span></span></span><br><span class="line"><span class="javascript">	<span class="built_in">console</span>.log(target.innerText);</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="actionscript"><span class="comment">// 通过 id 获取 按钮元素</span></span></span><br><span class="line"><span class="javascript"><span class="keyword">let</span> btn = <span class="built_in">document</span>.getElementById(<span class="string">"btn"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript"><span class="comment">// 为按钮添加点击事件</span></span></span><br><span class="line"><span class="actionscript">btn.onclick = <span class="function"><span class="keyword">function</span><span class="params">(ev)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">	<span class="comment">// 新建 li 元素</span></span></span><br><span class="line"><span class="javascript">	<span class="keyword">let</span> aLi = <span class="built_in">document</span>.createElement(<span class="string">"li"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">	<span class="comment">// 给 li 赋值</span></span></span><br><span class="line"><span class="javascript">	aLi.innerHTML = <span class="string">`li <span class="subst">$&#123;oLi.length+<span class="number">1</span>&#125;</span> 号`</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">	<span class="comment">// 直接将新 li 元素放到 ul 上</span></span></span><br><span class="line">	oUl.appendChild(aLi);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line">分析：</span><br><span class="line">将上面的代码和普通写法进行比对，显然用事件委托的写法更加的简洁，不仅能减少代码量，同时还能减少 dom 操作次数，实现对性能的优化，简直一举多得。</span><br></pre></td></tr></table></figure>
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/tags/javascript/">javascript</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2020/reactiveX-programming/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Reactive Programming</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2018/webStorage-cookie/">
+        <span class="next-text nav-default">浏览器数据的存储方式</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2014 -
+    
+    2021
+    <span class="footer-author">haohuan.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear" target="_blank" rel="noopener">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>
